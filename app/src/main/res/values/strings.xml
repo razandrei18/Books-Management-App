@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Books App</string>
+    <string name="LoginTitle">Login</string>
+    <string name="usernameHint">Username</string>
+    <string name="passwordHint">Password</string>
+    <string name="registerText">Don\'t have an account? Click here</string>
+    <string name="loginButtonText">Login</string>
+    <string name="welcomeText">Welcome</string>
 </resources>
