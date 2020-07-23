@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundColor"
-    tools:context=".LoginActivity">
+    tools:context=".login.LoginActivity">
 
 
     <TextView
@@ -39,6 +39,7 @@
         android:textColorHint="@color/colorPrimary">
 
     <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/textInputUsername"
         android:layout_width="320dp"
         android:layout_height="44dp"
         android:ems="10"
@@ -65,6 +66,7 @@
         android:layout_marginBottom="18dp">
 
     <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/textInputPassword"
         android:layout_width="320dp"
         android:layout_height="44dp"
         android:ems="10"
