@@ -6,6 +6,8 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -29,10 +31,10 @@ public class LoginInteractor {
         this.loginPresenter = loginPresenter;
     }
 
-    public void loginPostRequest() {
+    public void loginPostRequest(final LoginModel loginModel) {
         RequestQueue requestQueue = Volley.newRequestQueue(loginPresenter.getLoginActivityContext());
-        String url = "https://ancient-earth-13943.herokuapp.com/api/users/login";
-        StringRequest loginStringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        final String urlLogin = "https://ancient-earth-13943.herokuapp.com/api/users/login";
+        StringRequest loginStringRequest = new StringRequest(Request.Method.POST, urlLogin, new Response.Listener<String>() {
             @Override
             public void onResponse(String loginResponse) {
                 Log.i("LOGINTAG", "Response " + loginResponse.toString());
@@ -41,17 +43,22 @@ public class LoginInteractor {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.i("LOGINTAG ", "Error: " + error.toString());
+                Log.i("LOGINTAG ", "Error: " + error.networkResponse.statusCode);
             }
         })
         {
             @Override
-            protected Map<String, String> getParams(){
+            protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> loginParams = new HashMap<String, String>();
-                LoginModel loginModel = new LoginModel();
                 loginParams.put("email", loginModel.getUsername());
                 loginParams.put("password", loginModel.getPassword());
                 return loginParams;
+            }
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json");
+                return headers;
             }
         };
         requestQueue.add(loginStringRequest);
@@ -61,7 +68,8 @@ public class LoginInteractor {
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(jsonStr);
-            if(jsonObject.get("success").equals("true")){
+            if(jsonObject.getString("success").equals("true")){
+                jsonObject.getString("token");
                 Toast.makeText(loginPresenter.getLoginActivityContext(), "SUCCESS!!", Toast.LENGTH_SHORT).show();
             }
         } catch (JSONException e) {

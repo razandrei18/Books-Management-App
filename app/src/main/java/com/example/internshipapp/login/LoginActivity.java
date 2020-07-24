@@ -16,6 +16,7 @@ public class LoginActivity extends AppCompatActivity implements Contract.LoginVi
     TextInputEditText usernameInput, passwordInput;
     Button loginBtn;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,8 +29,8 @@ public class LoginActivity extends AppCompatActivity implements Contract.LoginVi
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = usernameInput.getText().toString();
-                String password = passwordInput.getText().toString();
+                String username = usernameInput.getText().toString().trim();
+                String password = passwordInput.getText().toString().trim();
 
                 LoginModel loginModel = new LoginModel(username, password);
                 loginPresenter.start(loginModel);

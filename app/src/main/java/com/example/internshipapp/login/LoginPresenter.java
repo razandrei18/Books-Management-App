@@ -22,8 +22,8 @@ public class LoginPresenter implements Contract.LoginListener {
         if (checkLoginError(loginModel)) {
             return;
         }
-        loginInteractor.loginPostRequest();
-        loginInteractor.loginPresenter.onSucces();
+            loginInteractor.loginPostRequest(loginModel);
+
     }
 
     @Override
