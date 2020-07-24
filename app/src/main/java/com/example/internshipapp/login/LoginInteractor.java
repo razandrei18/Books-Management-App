@@ -13,35 +13,59 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class LoginInteractor {
 
     private Contract.LoginListener loginListener;
     LoginPresenter loginPresenter;
 
-    public LoginInteractor(Contract.LoginListener loginListener) {
-        this.loginListener = loginListener;
+    public LoginInteractor(LoginPresenter loginPresenter) {
+        this.loginPresenter = loginPresenter;
     }
 
     public void loginPostRequest() {
         RequestQueue requestQueue = Volley.newRequestQueue(loginPresenter.getLoginActivityContext());
         String url = "https://ancient-earth-13943.herokuapp.com/api/users/login";
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        StringRequest loginStringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
-            public void onResponse(String response) {
-                Log.i("TAGG", "Response " + response.toString());
+            public void onResponse(String loginResponse) {
+                Log.i("LOGINTAG", "Response " + loginResponse.toString());
+                parseJsonResponseLogin(loginResponse);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.i("TAGG", "Error: " + error.toString());
+                Log.i("LOGINTAG ", "Error: " + error.toString());
             }
-        });
-
-        requestQueue.add(stringRequest);
+        })
+        {
+            @Override
+            protected Map<String, String> getParams(){
+                Map<String, String> loginParams = new HashMap<String, String>();
+                LoginModel loginModel = new LoginModel();
+                loginParams.put("email", loginModel.getUsername());
+                loginParams.put("password", loginModel.getPassword());
+                return loginParams;
+            }
+        };
+        requestQueue.add(loginStringRequest);
     }
 
-    public Contract.LoginListener getLoginListener() {
-        return loginListener;
+    public void parseJsonResponseLogin(String jsonStr){
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(jsonStr);
+            if(jsonObject.get("success").equals("true")){
+                Toast.makeText(loginPresenter.getLoginActivityContext(), "SUCCESS!!", Toast.LENGTH_SHORT).show();
+            }
+        } catch (JSONException e) {
+            Toast.makeText(loginPresenter.getLoginActivityContext(), "FAILED!!", Toast.LENGTH_SHORT).show();
+        }
     }
 }

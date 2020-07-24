@@ -7,9 +7,8 @@ import android.util.Patterns;
 public class LoginPresenter implements Contract.LoginListener {
 
     private Contract.LoginView loginView;
-    private LoginInteractor loginInteractor;
+    private LoginInteractor loginInteractor = new LoginInteractor(this);
     private Context loginActivityContext;
-
     public LoginPresenter(Contract.LoginView lw, Context c) {
         this.loginView = lw;
         this.loginActivityContext = c;
@@ -20,12 +19,11 @@ public class LoginPresenter implements Contract.LoginListener {
     }
 
     public void login(LoginModel loginModel) {
-        loginInteractor = new LoginInteractor(this);
         if (checkLoginError(loginModel)) {
             return;
         }
         loginInteractor.loginPostRequest();
-        loginInteractor.getLoginListener().onSucces();
+        loginInteractor.loginPresenter.onSucces();
     }
 
     @Override
@@ -51,7 +49,7 @@ public class LoginPresenter implements Contract.LoginListener {
             return true;
         }
 
-        if (TextUtils.isEmpty(password) || password.length() < 6) {
+        if (TextUtils.isEmpty(password) || password.length() < 2) {
             loginView.onFailedView("The password must have at least 6 characters!");
             return true;
         }
