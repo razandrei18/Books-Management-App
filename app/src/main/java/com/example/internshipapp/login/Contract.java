@@ -3,8 +3,8 @@ package com.example.internshipapp.login;
 public interface Contract {
 
     interface LoginView{
-         void onSucces();
-         void onFailed(String message);
+         void onSuccesView();
+         void onFailedView(String message);
     }
 
     interface LoginListener{
