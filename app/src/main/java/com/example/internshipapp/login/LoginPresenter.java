@@ -11,6 +11,7 @@ public class LoginPresenter implements Contract.LoginListener {
     private LoginInteractor loginInteractor = new LoginInteractor(this);
     private Context loginActivityContext;
 
+
     public LoginPresenter(Contract.LoginView lw, Context c) {
         this.loginView = lw;
         this.loginActivityContext = c;
@@ -23,8 +24,7 @@ public class LoginPresenter implements Contract.LoginListener {
     public void login(LoginModel loginModel) {
         if (checkLoginError(loginModel)) {
             return;
-        }
-        else {
+        } else {
             loginInteractor.loginPostRequest(loginModel);
         }
     }

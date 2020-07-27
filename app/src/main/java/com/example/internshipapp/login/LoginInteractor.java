@@ -8,6 +8,7 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -16,9 +17,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,10 +50,9 @@ public class LoginInteractor {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.i("LOGINTAG ", "Error: " + error.networkResponse.data);
-                if(error.networkResponse.statusCode == 404) {
+                if (error.networkResponse.statusCode == 404) {
                     parseJsonErrorLogin(error);
-                }
-                else {
+                } else {
                     builder.setTitle("Login Error");
                     displayLoginALert("Something went wrong, please try again later!");
                 }
@@ -96,7 +98,7 @@ public class LoginInteractor {
         }
     }
 
-    public void displayLoginALert(String message){
+    public void displayLoginALert(String message) {
         builder.setMessage(message);
         builder.setNegativeButton("close", new DialogInterface.OnClickListener() {
             @Override
@@ -104,7 +106,7 @@ public class LoginInteractor {
                 builder.setCancelable(true);
             }
         });
-        AlertDialog alertDialog=builder.create();
+        AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
 }
