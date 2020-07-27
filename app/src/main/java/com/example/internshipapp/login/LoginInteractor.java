@@ -6,18 +6,17 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
-
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +32,7 @@ public class LoginInteractor {
 
     public void loginPostRequest(final LoginModel loginModel) {
         RequestQueue requestQueue = Volley.newRequestQueue(loginPresenter.getLoginActivityContext());
-        final String urlLogin = "https://ancient-earth-13943.herokuapp.com/api/users/login";
+        String urlLogin = "https://ancient-earth-13943.herokuapp.com/api/users/login";
         StringRequest loginStringRequest = new StringRequest(Request.Method.POST, urlLogin, new Response.Listener<String>() {
             @Override
             public void onResponse(String loginResponse) {
@@ -43,10 +42,15 @@ public class LoginInteractor {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.i("LOGINTAG ", "Error: " + error.networkResponse.statusCode);
+                Log.i("LOGINTAG ", "Error: " + error.networkResponse.data);
+                if(error.networkResponse.statusCode == 404) {
+                    parseJsonErrorLogin(error);
+                }
+                else {
+                    Toast.makeText(loginPresenter.getLoginActivityContext(), "Something went wrong. Please try again later!", Toast.LENGTH_LONG).show();
+                }
             }
-        })
-        {
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> loginParams = new HashMap<String, String>();
@@ -54,26 +58,35 @@ public class LoginInteractor {
                 loginParams.put("password", loginModel.getPassword());
                 return loginParams;
             }
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json");
-                return headers;
-            }
         };
         requestQueue.add(loginStringRequest);
     }
 
-    public void parseJsonResponseLogin(String jsonStr){
+    public void parseJsonResponseLogin(String jsonStr) {
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(jsonStr);
-            if(jsonObject.getString("success").equals("true")){
+            if (jsonObject.getString("success").equals("true")) {
                 jsonObject.getString("token");
-                Toast.makeText(loginPresenter.getLoginActivityContext(), "SUCCESS!!", Toast.LENGTH_SHORT).show();
+                loginPresenter.onSucces();
             }
         } catch (JSONException e) {
-            Toast.makeText(loginPresenter.getLoginActivityContext(), "FAILED!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(loginPresenter.getLoginActivityContext(), jsonStr, Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
+
+    public void parseJsonErrorLogin(VolleyError volleyError) {
+        NetworkResponse networkResponse = volleyError.networkResponse;
+        if (networkResponse != null && networkResponse.data != null) {
+            String jsonError = new String(networkResponse.data);
+            JSONObject errorJSONObject = null;
+            try {
+                errorJSONObject = new JSONObject(jsonError);
+                Toast.makeText(loginPresenter.getLoginActivityContext(), errorJSONObject.getString("error"), Toast.LENGTH_SHORT).show();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

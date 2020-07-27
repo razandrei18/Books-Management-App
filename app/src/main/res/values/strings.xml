@@ -7,4 +7,6 @@
     <string name="loginButtonText">Login</string>
     <string name="welcomeText">Welcome</string>
     <string name="loginSuccessfully">Login successfully</string>
+    <string name="invalidUsernameErr">The username is empty or the email is invalid</string>
+    <string name="invalidPasswordError">The password must have at least 3 characters!</string>
 </resources>

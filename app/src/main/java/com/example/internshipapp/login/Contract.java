@@ -4,7 +4,8 @@ public interface Contract {
 
     interface LoginView{
          void onSuccesView();
-         void onFailedView(String message);
+         void onFailedUsername();
+         void onFailedPassword();
     }
 
     interface LoginListener{

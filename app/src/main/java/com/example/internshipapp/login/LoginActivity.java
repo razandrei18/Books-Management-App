@@ -44,9 +44,12 @@ public class LoginActivity extends AppCompatActivity implements Contract.LoginVi
     }
 
     @Override
-    public void onFailedView(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    public void onFailedUsername() {
+        Toast.makeText(this, R.string.invalidUsernameErr, Toast.LENGTH_SHORT).show();
     }
 
-
+    @Override
+    public void onFailedPassword() {
+        Toast.makeText(this, R.string.invalidPasswordError, Toast.LENGTH_SHORT).show();
+    }
 }

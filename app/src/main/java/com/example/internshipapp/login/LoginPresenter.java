@@ -2,6 +2,7 @@ package com.example.internshipapp.login;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 
 public class LoginPresenter implements Contract.LoginListener {
@@ -9,6 +10,7 @@ public class LoginPresenter implements Contract.LoginListener {
     private Contract.LoginView loginView;
     private LoginInteractor loginInteractor = new LoginInteractor(this);
     private Context loginActivityContext;
+
     public LoginPresenter(Contract.LoginView lw, Context c) {
         this.loginView = lw;
         this.loginActivityContext = c;
@@ -22,8 +24,9 @@ public class LoginPresenter implements Contract.LoginListener {
         if (checkLoginError(loginModel)) {
             return;
         }
+        else {
             loginInteractor.loginPostRequest(loginModel);
-
+        }
     }
 
     @Override
@@ -33,7 +36,6 @@ public class LoginPresenter implements Contract.LoginListener {
 
     @Override
     public void onFailed(String message) {
-        loginView.onFailedView(message);
     }
 
     public Context getLoginActivityContext() {
@@ -45,12 +47,12 @@ public class LoginPresenter implements Contract.LoginListener {
         String password = loginModel.getPassword();
 
         if (TextUtils.isEmpty(username) || !Patterns.EMAIL_ADDRESS.matcher(username).matches()) {
-            loginView.onFailedView("The username is empty or the email is invalid");
+            loginView.onFailedUsername();
             return true;
         }
 
-        if (TextUtils.isEmpty(password) || password.length() < 2) {
-            loginView.onFailedView("The password must have at least 6 characters!");
+        if (TextUtils.isEmpty(password) || password.length() < 3) {
+            loginView.onFailedPassword();
             return true;
         }
         return false;
