@@ -1,6 +1,8 @@
 package com.example.internshipapp.login;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
@@ -25,12 +27,14 @@ public class LoginInteractor {
 
     private Contract.LoginListener loginListener;
     LoginPresenter loginPresenter;
+    AlertDialog.Builder builder;
 
     public LoginInteractor(LoginPresenter loginPresenter) {
         this.loginPresenter = loginPresenter;
     }
 
     public void loginPostRequest(final LoginModel loginModel) {
+        builder = new AlertDialog.Builder(loginPresenter.getLoginActivityContext());
         RequestQueue requestQueue = Volley.newRequestQueue(loginPresenter.getLoginActivityContext());
         String urlLogin = "https://ancient-earth-13943.herokuapp.com/api/users/login";
         StringRequest loginStringRequest = new StringRequest(Request.Method.POST, urlLogin, new Response.Listener<String>() {
@@ -47,7 +51,8 @@ public class LoginInteractor {
                     parseJsonErrorLogin(error);
                 }
                 else {
-                    Toast.makeText(loginPresenter.getLoginActivityContext(), "Something went wrong. Please try again later!", Toast.LENGTH_LONG).show();
+                    builder.setTitle("Login Error");
+                    displayLoginALert("Something went wrong, please try again later!");
                 }
             }
         }) {
@@ -71,7 +76,6 @@ public class LoginInteractor {
                 loginPresenter.onSucces();
             }
         } catch (JSONException e) {
-            Toast.makeText(loginPresenter.getLoginActivityContext(), jsonStr, Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }
@@ -83,10 +87,24 @@ public class LoginInteractor {
             JSONObject errorJSONObject = null;
             try {
                 errorJSONObject = new JSONObject(jsonError);
-                Toast.makeText(loginPresenter.getLoginActivityContext(), errorJSONObject.getString("error"), Toast.LENGTH_SHORT).show();
+                builder.setTitle("Login Error!");
+                displayLoginALert(errorJSONObject.getString("error"));
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void displayLoginALert(String message){
+        builder.setMessage(message);
+        builder.setNegativeButton("close", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                builder.setCancelable(true);
+            }
+        });
+        AlertDialog alertDialog=builder.create();
+        alertDialog.show();
     }
 }
