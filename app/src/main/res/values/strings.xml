@@ -9,4 +9,6 @@
     <string name="loginSuccessfully">Login successfully</string>
     <string name="invalidUsernameErr">The username is empty or the email is invalid</string>
     <string name="invalidPasswordError">The password must have at least 3 characters!</string>
+    <string name="loginAlertDialogTitle">Login error</string>
+    <string name="loginUndefinedErrorText">Something went wrong. Please try again!</string>
 </resources>

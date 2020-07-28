@@ -30,14 +30,15 @@ public class LoginInteractor {
 
     private Contract.LoginListener loginListener;
     LoginPresenter loginPresenter;
-    AlertDialog.Builder builder;
+    public String loginDefinedErrorMessage;
+
 
     public LoginInteractor(LoginPresenter loginPresenter) {
         this.loginPresenter = loginPresenter;
     }
 
     public void loginPostRequest(final LoginModel loginModel) {
-        builder = new AlertDialog.Builder(loginPresenter.getLoginActivityContext());
+
         RequestQueue requestQueue = Volley.newRequestQueue(loginPresenter.getLoginActivityContext());
         String urlLogin = "https://ancient-earth-13943.herokuapp.com/api/users/login";
         StringRequest loginStringRequest = new StringRequest(Request.Method.POST, urlLogin, new Response.Listener<String>() {
@@ -49,13 +50,7 @@ public class LoginInteractor {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.i("LOGINTAG ", "Error: " + error.networkResponse.data);
-                if (error.networkResponse.statusCode == 404) {
-                    parseJsonErrorLogin(error);
-                } else {
-                    builder.setTitle("Login Error");
-                    displayLoginALert("Something went wrong, please try again later!");
-                }
+                parseJsonErrorLogin(error);
             }
         }) {
             @Override
@@ -82,31 +77,20 @@ public class LoginInteractor {
         }
     }
 
-    public void parseJsonErrorLogin(VolleyError volleyError) {
+    public String parseJsonErrorLogin(VolleyError volleyError) {
         NetworkResponse networkResponse = volleyError.networkResponse;
         if (networkResponse != null && networkResponse.data != null) {
             String jsonError = new String(networkResponse.data);
             JSONObject errorJSONObject = null;
             try {
                 errorJSONObject = new JSONObject(jsonError);
-                builder.setTitle("Login Error!");
-                displayLoginALert(errorJSONObject.getString("error"));
-
+                loginPresenter.onFailed(errorJSONObject.getString("error"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+        return loginDefinedErrorMessage;
     }
 
-    public void displayLoginALert(String message) {
-        builder.setMessage(message);
-        builder.setNegativeButton("close", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                builder.setCancelable(true);
-            }
-        });
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-    }
+
 }

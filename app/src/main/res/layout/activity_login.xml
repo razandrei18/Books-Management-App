@@ -97,7 +97,7 @@
         android:id="@+id/buttonLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/button"
+        android:background="@drawable/login_btn_selector"
         android:text="@string/loginButtonText"
         android:textColor="@color/textColorWhite"
         android:textStyle="bold"

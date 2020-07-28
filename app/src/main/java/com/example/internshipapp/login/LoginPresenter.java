@@ -36,6 +36,11 @@ public class LoginPresenter implements Contract.LoginListener {
 
     @Override
     public void onFailed(String message) {
+        if (message != null) {
+            loginView.onLoginDefinedError(message);
+        } else {
+            loginView.onLoginUndefinedError();
+        }
     }
 
     public Context getLoginActivityContext() {

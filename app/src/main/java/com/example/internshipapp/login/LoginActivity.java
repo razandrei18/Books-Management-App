@@ -2,7 +2,9 @@ package com.example.internshipapp.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,7 +21,7 @@ public class LoginActivity extends AppCompatActivity implements Contract.LoginVi
     private LoginPresenter loginPresenter;
     TextInputEditText usernameInput, passwordInput;
     CircularProgressButton loginBtn;
-
+    AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +31,11 @@ public class LoginActivity extends AppCompatActivity implements Contract.LoginVi
         usernameInput = findViewById(R.id.textInputUsername);
         passwordInput = findViewById(R.id.textInputPassword);
         loginBtn = findViewById(R.id.buttonLogin);
+        builder = new AlertDialog.Builder(LoginActivity.this);
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showProgressButton();
+                showProgressButtonAnimation();
                 usernameInput.setEnabled(false);
                 passwordInput.setEnabled(false);
                 loginBtn.setEnabled(false);
@@ -47,10 +50,10 @@ public class LoginActivity extends AppCompatActivity implements Contract.LoginVi
     @Override
     public void onSuccesView() {
         Toast.makeText(this, R.string.loginSuccessfully, Toast.LENGTH_SHORT).show();
-        usernameInput.setEnabled(false);
-        passwordInput.setEnabled(false);
-        loginBtn.setEnabled(false);
-        hideProgressButton();
+        usernameInput.setEnabled(true);
+        passwordInput.setEnabled(true);
+        loginBtn.setEnabled(true);
+        hideProgressButtonAnimation();
     }
 
     @Override
@@ -59,8 +62,7 @@ public class LoginActivity extends AppCompatActivity implements Contract.LoginVi
         usernameInput.setEnabled(true);
         passwordInput.setEnabled(true);
         loginBtn.setEnabled(true);
-
-        hideProgressButton();
+        hideProgressButtonAnimation();
     }
 
     @Override
@@ -69,27 +71,50 @@ public class LoginActivity extends AppCompatActivity implements Contract.LoginVi
         usernameInput.setEnabled(true);
         passwordInput.setEnabled(true);
         loginBtn.setEnabled(true);
-        hideProgressButton();
+        hideProgressButtonAnimation();
     }
 
-    public void showProgressButton() {
+    @Override
+    public void onLoginDefinedError(String message) {
+        displayLoginALert(message);
+    }
+
+    @Override
+    public void onLoginUndefinedError() {
+        displayLoginALert(getString(R.string.loginUndefinedErrorText));
+    }
+
+    public void showProgressButtonAnimation() {
         loginBtn.startAnimation();
-        loginBtn.setBackgroundResource(R.drawable.button);
+
     }
 
-    public void hideProgressButton() {
+    public void hideProgressButtonAnimation() {
         loginBtn.revertAnimation();
         loginBtn.setBackgroundResource(R.drawable.button);
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
-        if(hasFocus==true){
+        if (hasFocus == true) {
             usernameInput.setEnabled(true);
             passwordInput.setEnabled(true);
             loginBtn.setEnabled(true);
-            hideProgressButton();
+            hideProgressButtonAnimation();
         }
         super.onWindowFocusChanged(hasFocus);
+    }
+
+    public void displayLoginALert(String message) {
+        builder.setTitle(R.string.loginAlertDialogTitle);
+        builder.setMessage(message);
+        builder.setNegativeButton("close", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                builder.setCancelable(true);
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }
