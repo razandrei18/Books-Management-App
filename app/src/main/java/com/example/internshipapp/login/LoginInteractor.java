@@ -3,6 +3,7 @@ package com.example.internshipapp.login;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
@@ -31,6 +32,8 @@ public class LoginInteractor {
     private Contract.LoginListener loginListener;
     LoginPresenter loginPresenter;
     public String loginDefinedErrorMessage;
+    public static final String SHARED_PREFS = "loginSharedPreferences";
+    public static final String TEXT = "loginToken";
 
 
     public LoginInteractor(LoginPresenter loginPresenter) {
@@ -69,7 +72,10 @@ public class LoginInteractor {
         try {
             jsonObject = new JSONObject(jsonStr);
             if (jsonObject.getString("success").equals("true")) {
-                jsonObject.getString("token");
+                SharedPreferences sharedPreferences = loginPresenter.getLoginActivityContext().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(TEXT, jsonObject.getString("token"));
+                editor.apply();
                 loginPresenter.onSucces();
             }
         } catch (JSONException e) {

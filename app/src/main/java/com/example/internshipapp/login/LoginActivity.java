@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ public class LoginActivity extends AppCompatActivity implements Contract.LoginVi
     TextInputEditText usernameInput, passwordInput;
     CircularProgressButton loginBtn;
     AlertDialog.Builder builder;
+    String loginTokenText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +52,14 @@ public class LoginActivity extends AppCompatActivity implements Contract.LoginVi
     @Override
     public void onSuccesView() {
         Toast.makeText(this, R.string.loginSuccessfully, Toast.LENGTH_SHORT).show();
+        displayLoginALert(getString(R.string.loginSuccessfully));
         usernameInput.setEnabled(true);
         passwordInput.setEnabled(true);
         loginBtn.setEnabled(true);
         hideProgressButtonAnimation();
+       /* SharedPreferences sharedPreferences = getSharedPreferences(LoginInteractor.SHARED_PREFS, MODE_PRIVATE);
+        loginTokenText = sharedPreferences.getString(LoginInteractor.TEXT, "");
+        Toast.makeText(this, loginTokenText, Toast.LENGTH_SHORT).show();*/
     }
 
     @Override
