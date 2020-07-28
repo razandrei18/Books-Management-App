@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
+    tools:context=".register.RegisterActivity">
+
+    <TextView
+        android:id="@+id/textViewRegisterTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/cambo"
+        android:text="@string/registerPageTitle"
+        android:textColor="@color/colorPrimary"
+        android:textSize="40dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/usernameRegisterId"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/usernameRegisterId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:hint="@string/usernameHint"
+        android:textColorHint="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@id/emailRegisterId"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed">
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputUsernameRegister"
+            android:layout_width="320dp"
+            android:layout_height="44dp"
+            android:ems="10"
+            android:fontFamily="@font/cambo"
+            android:inputType="text"
+            android:padding="6dp"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/emailRegisterId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:hint="@string/emailRegisterHint"
+        android:textColorHint="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@id/passwordRegisterId"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/usernameRegisterId">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputEmailRegister"
+            android:layout_width="320dp"
+            android:layout_height="44dp"
+            android:ems="10"
+            android:fontFamily="@font/cambo"
+            android:inputType="text"
+            android:padding="6dp"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordRegisterId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="18dp"
+        android:hint="@string/passwordHint"
+        android:textColorHint="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@id/confirmPasswordRegisterId"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/emailRegisterId">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputPasswordRegister"
+            android:layout_width="320dp"
+            android:layout_height="44dp"
+            android:ems="10"
+            android:fontFamily="@font/cambo"
+            android:inputType="textPassword"
+            android:padding="6dp"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/confirmPasswordRegisterId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:hint="@string/confirm_passwordRegisterHint"
+        android:textColorHint="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@id/buttonRegister"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/passwordRegisterId">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputConfirmPasswordRegister"
+            android:layout_width="320dp"
+            android:layout_height="44dp"
+            android:ems="10"
+            android:fontFamily="@font/cambo"
+            android:inputType="textPassword"
+            android:padding="6dp"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
+        android:id="@+id/buttonRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/login_btn_selector"
+        android:text="@string/registerButtonText"
+        android:textColor="@color/textColorWhite"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/confirmPasswordRegisterId"
+        app:spinning_bar_color="#FFF"
+        app:spinning_bar_padding="6dp"
+        app:spinning_bar_width="6dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,4 +11,8 @@
     <string name="invalidPasswordError">The password must have at least 3 characters!</string>
     <string name="loginAlertDialogTitle">Login error</string>
     <string name="loginUndefinedErrorText">Something went wrong. Please try again!</string>
+    <string name="registerPageTitle">Register</string>
+    <string name="emailRegisterHint">Email</string>
+    <string name="confirm_passwordRegisterHint">Confirm password</string>
+    <string name="registerButtonText">Register</string>
 </resources>
