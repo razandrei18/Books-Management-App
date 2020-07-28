@@ -52,14 +52,10 @@ public class LoginActivity extends AppCompatActivity implements Contract.LoginVi
     @Override
     public void onSuccesView() {
         Toast.makeText(this, R.string.loginSuccessfully, Toast.LENGTH_SHORT).show();
-        displayLoginALert(getString(R.string.loginSuccessfully));
         usernameInput.setEnabled(true);
         passwordInput.setEnabled(true);
         loginBtn.setEnabled(true);
         hideProgressButtonAnimation();
-       /* SharedPreferences sharedPreferences = getSharedPreferences(LoginInteractor.SHARED_PREFS, MODE_PRIVATE);
-        loginTokenText = sharedPreferences.getString(LoginInteractor.TEXT, "");
-        Toast.makeText(this, loginTokenText, Toast.LENGTH_SHORT).show();*/
     }
 
     @Override
