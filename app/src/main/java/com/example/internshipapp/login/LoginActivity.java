@@ -5,15 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.internshipapp.R;
+import com.example.internshipapp.register.RegisterActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
 import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
@@ -21,9 +24,9 @@ import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
 public class LoginActivity extends AppCompatActivity implements Contract.LoginView {
     private LoginPresenter loginPresenter;
     TextInputEditText usernameInput, passwordInput;
+    TextView registerPageTextView;
     CircularProgressButton loginBtn;
     AlertDialog.Builder builder;
-    String loginTokenText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,7 @@ public class LoginActivity extends AppCompatActivity implements Contract.LoginVi
         loginPresenter = new LoginPresenter(this, this);
         usernameInput = findViewById(R.id.textInputUsername);
         passwordInput = findViewById(R.id.textInputPassword);
+        registerPageTextView = findViewById(R.id.textViewRegister);
         loginBtn = findViewById(R.id.buttonLogin);
         builder = new AlertDialog.Builder(LoginActivity.this);
         loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -45,6 +49,14 @@ public class LoginActivity extends AppCompatActivity implements Contract.LoginVi
                 String password = passwordInput.getText().toString().trim();
                 LoginModel loginModel = new LoginModel(username, password);
                 loginPresenter.start(loginModel);
+            }
+        });
+
+        registerPageTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+                startActivity(intent);
             }
         });
     }

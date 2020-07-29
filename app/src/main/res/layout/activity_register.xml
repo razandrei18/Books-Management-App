@@ -48,8 +48,7 @@
             android:padding="6dp"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
-            android:textSize="18dp"
-            android:textStyle="bold" />
+            android:textSize="18dp"/>
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -75,8 +74,7 @@
             android:padding="6dp"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
-            android:textSize="18dp"
-            android:textStyle="bold" />
+            android:textSize="18dp"/>
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -137,7 +135,7 @@
         android:id="@+id/buttonRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/login_btn_selector"
+        android:background="@drawable/register_btn_selector"
         android:text="@string/registerButtonText"
         android:textColor="@color/textColorWhite"
         android:textStyle="bold"
