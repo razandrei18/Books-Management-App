@@ -61,7 +61,8 @@ public class RegisterPresenter implements RegisterContract.RegisterListener {
             registerView.onFailedCredentials();
             return true;
         }
-        if(confirmPassword.equals(password) && password.length() <3 && confirmPassword.length() <3){
+
+        if(!password.equals(confirmPassword) || password.length() <3 || confirmPassword.length() <3){
             registerView.onFailedPassword();
             return true;
         }

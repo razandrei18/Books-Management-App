@@ -16,10 +16,10 @@
     <string name="confirm_passwordRegisterHint">Confirm password</string>
     <string name="registerButtonText">Register</string>
     <string name="registrSuccessfullyMessage">Registration Successfully</string>
-    <string name="passwordFailedErrorMsg">The passwords did not match and must have at least 3 characters</string>
+    <string name="passwordFailedErrorMsg">The passwords did not match or the password you entered is too weak!\n (It must have at least 3 characters)</string>
     <string name="undefinedRegisterError">Something went wrong, please try again!</string>
     <string name="errorRegisterDialogTitle">Register Error</string>
-    <string name="successRegisterDialogTitle">Account created!</string>
+    <string name="successRegisterDialogTitle">Congrats!</string>
     <string name="successRegisterDialogMsg">Your account has been created successfully! Press OK to Login now!</string>
     <string name="failedCredentialsRegisterMsg">The fields are empty or the email is wrong!</string>
 </resources>

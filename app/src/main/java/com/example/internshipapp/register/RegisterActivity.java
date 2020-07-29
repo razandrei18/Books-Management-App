@@ -43,6 +43,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterContr
                 email.setEnabled(false);
                 password.setEnabled(false);
                 confirmPassword.setEnabled(false);
+                registerButton.setEnabled(false);
                 String usernameField = username.getText().toString().trim();
                 String emailField = email.getText().toString().trim();
                 String passwordField = password.getText().toString().trim();
@@ -61,6 +62,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterContr
         email.setEnabled(true);
         password.setEnabled(true);
         confirmPassword.setEnabled(true);
+        registerButton.setEnabled(true);
     }
 
     @Override
@@ -70,6 +72,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterContr
         email.setEnabled(true);
         password.setEnabled(true);
         confirmPassword.setEnabled(true);
+        registerButton.setEnabled(true);
         hideProgressButtonAnimation();
     }
 
@@ -80,6 +83,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterContr
         email.setEnabled(true);
         password.setEnabled(true);
         confirmPassword.setEnabled(true);
+        registerButton.setEnabled(true);
         hideProgressButtonAnimation();
     }
 
@@ -90,6 +94,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterContr
         email.setEnabled(true);
         password.setEnabled(true);
         confirmPassword.setEnabled(true);
+        registerButton.setEnabled(true);
         hideProgressButtonAnimation();
     }
 
@@ -134,6 +139,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterContr
 
     public void hideProgressButtonAnimation() {
         registerButton.revertAnimation();
+        registerButton.setBackgroundResource(R.drawable.button);
     }
 
     @Override
