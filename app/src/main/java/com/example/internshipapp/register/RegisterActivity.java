@@ -125,8 +125,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterContr
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEGATIVE).setEnabled(false);
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
         AlertDialog alertDialog = builder.create();
