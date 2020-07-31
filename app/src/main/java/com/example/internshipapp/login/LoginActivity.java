@@ -15,9 +15,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.internshipapp.MainActivity;
 import com.example.internshipapp.R;
 import com.example.internshipapp.register.RegisterActivity;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.util.zip.Inflater;
 
 import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
 
@@ -68,6 +71,8 @@ public class LoginActivity extends AppCompatActivity implements Contract.LoginVi
         passwordInput.setEnabled(true);
         loginBtn.setEnabled(true);
         hideProgressButtonAnimation();
+        Intent intent=new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     @Override

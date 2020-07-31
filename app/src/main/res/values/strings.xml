@@ -22,4 +22,11 @@
     <string name="successRegisterDialogTitle">Congrats!</string>
     <string name="successRegisterDialogMsg">Your account has been created successfully! Press OK to Login now!</string>
     <string name="failedCredentialsRegisterMsg">The fields are empty or the email is wrong!</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="navBooksMenuItemTitle">Books</string>
+    <string name="navProfileMenuItemTitle">Profile</string>
 </resources>
