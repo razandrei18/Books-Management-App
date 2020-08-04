@@ -35,6 +35,7 @@ public class LoginActivity extends AppCompatActivity implements Contract.LoginVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         loginPresenter = new LoginPresenter(this, this);
         usernameInput = findViewById(R.id.textInputUsername);
         passwordInput = findViewById(R.id.textInputPassword);
@@ -70,7 +71,6 @@ public class LoginActivity extends AppCompatActivity implements Contract.LoginVi
         usernameInput.setEnabled(true);
         passwordInput.setEnabled(true);
         loginBtn.setEnabled(true);
-        hideProgressButtonAnimation();
         Intent intent=new Intent(this, MainActivity.class);
         startActivity(intent);
     }
