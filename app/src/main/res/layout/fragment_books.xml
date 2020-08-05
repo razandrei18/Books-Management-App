@@ -1,25 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".dashboard.Fragments.BooksFragment">
-
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_books"
         android:padding="4dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         tools:listitem="@layout/book_item"/>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addBook_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|top"
+        android:layout_gravity="end|bottom"
         android:layout_margin="14dp"
         android:src="@drawable/ic_add_white_24dp" />
-
+    <ProgressBar
+        android:id="@+id/booksLoading_progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/colorPrimary"/>
 </FrameLayout>

@@ -29,5 +29,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="navBooksMenuItemTitle">Books</string>
     <string name="navProfileMenuItemTitle">Profile</string>
-    <string name="test">Ana are mere</string>
+    <string name="test">Profile Fragment</string>
 </resources>

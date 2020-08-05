@@ -2,19 +2,23 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/button">
 
         <TextView
             android:id="@+id/textView_BookTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Title"
+            android:paddingTop="4dp"
             android:textAlignment="center"
             android:textSize="30dp"
+            android:fontFamily="@font/cambo"
+            android:textColor="#FFF"
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -24,9 +28,11 @@
             android:id="@+id/textView_BookAuthor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:text="Author"
+            android:paddingLeft="20dp"
+            android:paddingTop="6dp"
             android:textSize="24dp"
+            android:textColor="#FFF"
+            android:fontFamily="@font/cambo"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textView_BookTitle" />
@@ -35,13 +41,15 @@
             android:id="@+id/textView_BookPublisher"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:paddingLeft="10dp"
-            android:text="Publisher"
+            android:paddingBottom="8dp"
             android:textSize="24dp"
+            android:textColor="#FFF"
+            android:fontFamily="@font/cambo"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView_BookAuthor"
-            android:layout_marginTop="4dp"/>
+            app:layout_constraintTop_toBottomOf="@id/textView_BookAuthor" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
