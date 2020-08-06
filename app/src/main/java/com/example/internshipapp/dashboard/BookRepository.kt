@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.android.volley.AuthFailureError
 import com.android.volley.Request
@@ -45,7 +46,7 @@ class BookRepository {
 
                 },
                 Response.ErrorListener { error ->
-                    Log.i("ERRORRR", error.toString())
+                    Log.i("getBooksERR", error.toString())
                 })
         {
             @Throws(AuthFailureError::class)
@@ -59,7 +60,5 @@ class BookRepository {
         requestQueue.add(jsonArrayRequest)
         return liveBookData
     }
-
-
 }
 

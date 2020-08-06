@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,11 +35,18 @@ class BooksFragment : Fragment() {
         }
         booksModel.init()
         booksModel.books.observe(viewLifecycleOwner, Observer<List<BookItem>>() {
-            adapter.setData(it)
-            recyclerView_books.layoutManager = LinearLayoutManager(context)
-            recyclerView_books.adapter = adapter
-            hideProgressBar()
+            if (it != null) {
+                adapter.setData(it)
+                recyclerView_books.layoutManager = LinearLayoutManager(context)
+                recyclerView_books.adapter = adapter
+                hideProgressBar()
+            }
+            else{
+                showErrorMessage()
+                hideProgressBar()
+            }
         })
+
 
         recyclerView_books.setHasFixedSize(true)
 
@@ -48,6 +56,11 @@ class BooksFragment : Fragment() {
      fun hideProgressBar(){
         booksLoading_progressBar.visibility = View.INVISIBLE
     }
+
+    fun showErrorMessage(){
+        Toast.makeText(context, getString(R.string.getBooksErrorMessage), Toast.LENGTH_SHORT).show()
+    }
+
 }
 
 
