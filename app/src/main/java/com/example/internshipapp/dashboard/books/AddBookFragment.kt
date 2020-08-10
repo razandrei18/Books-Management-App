@@ -15,7 +15,6 @@ import com.example.internshipapp.dashboard.models.BookItem
 import kotlinx.android.synthetic.main.fragment_add_book.*
 
 class AddBookFragment : Fragment() {
-    var booksFragment: BooksFragment = BooksFragment()
     lateinit var booksModel: BooksFragmentViewModel
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
