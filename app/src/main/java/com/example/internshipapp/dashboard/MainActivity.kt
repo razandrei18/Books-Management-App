@@ -1,20 +1,22 @@
-package com.example.internshipapp
+package com.example.internshipapp.dashboard
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.internshipapp.dashboard.Fragments.BooksFragment
-import com.example.internshipapp.dashboard.Fragments.ProfileFragment
+import androidx.lifecycle.ViewModelProvider
+import com.example.internshipapp.R
+import com.example.internshipapp.dashboard.books.BooksFragment
+import com.example.internshipapp.dashboard.profile.ProfileFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-
+    val booksFragment = BooksFragment()
+    val profileFragment = ProfileFragment()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val booksFragment = BooksFragment()
-        val profileFragment = ProfileFragment()
+
         setCurrentFragment(booksFragment)
 
         navBottom_id.setOnNavigationItemSelectedListener {
@@ -28,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setCurrentFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.main_fragment, fragment)
+            replace(R.id.main_fragment, fragment).addToBackStack("currentFragment")
             commit()
         }
     }

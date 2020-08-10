@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".dashboard.MainActivity"
             android:label="@string/title_activity_main"></activity>
         <activity android:name=".register.RegisterActivity" />
         <activity

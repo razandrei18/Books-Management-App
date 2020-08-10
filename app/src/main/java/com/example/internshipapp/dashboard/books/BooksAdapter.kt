@@ -1,4 +1,4 @@
-package com.example.internshipapp.dashboard
+package com.example.internshipapp.dashboard.books
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.internshipapp.R
+import com.example.internshipapp.dashboard.models.BookItem
 import kotlinx.android.synthetic.main.book_item.view.*
 
 class BooksAdapter() : RecyclerView.Adapter<BooksAdapter.BooksViewHolder>() {
