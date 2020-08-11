@@ -36,13 +36,12 @@ class AddBookFragment : Fragment() {
             var bookPublisher: String = textInputPublisher.text.toString().trim()
             booksModel.addBook(BookItem(bookTitle, bookAuthor, bookPublisher))
             booksModel.bookNew.observe(viewLifecycleOwner, Observer {
-                if (it != null){
-                    Log.i("ADDTA", it.toString())
+                if (it != null) {
+                    Log.i("ADDTAG", it.toString())
                     booksModel.init()
                     redirectUser()
                     hideProgressButtonAnimation()
-                }
-                else{
+                } else {
                     Toast.makeText(context, "ADD ERROR", Toast.LENGTH_SHORT).show()
                 }
             })

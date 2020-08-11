@@ -14,7 +14,7 @@ class BooksFragmentViewModel() : ViewModel() {
     lateinit var cont: Context
     var books: MutableLiveData<List<BookItem>> = MutableLiveData<List<BookItem>>()
     var bookRepo: BookRepository = BookRepository()
-    var bookNew : MutableLiveData<BookItem> = MutableLiveData<BookItem>()
+    var bookNew: MutableLiveData<BookItem> = MutableLiveData<BookItem>()
 
     fun init(): MutableLiveData<List<BookItem>> {
         if (books.value.isNullOrEmpty()) {

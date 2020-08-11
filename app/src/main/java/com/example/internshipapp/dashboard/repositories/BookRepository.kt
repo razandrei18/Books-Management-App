@@ -8,7 +8,6 @@ import com.android.volley.AuthFailureError
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
-import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.internshipapp.dashboard.models.BookItem
@@ -62,13 +61,13 @@ class BookRepository {
     fun addBookRequest(c: Context, newBookItem: BookItem): MutableLiveData<BookItem> {
         val addBookRequestQueue = Volley.newRequestQueue(c)
         val sharedPref = c.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE).getString(TEXT, "")
-        var JSONObject = object : StringRequest(Method.POST, addBookUrl,
+        var addBookObject = object : StringRequest(Method.POST, addBookUrl,
                 Response.Listener { response ->
                     Log.i("ADDBOOK", response)
-                    var bTitle  = newBookItem.bookTitle
-                    var bAuthor  = newBookItem.bookPublisher
-                    var bPublisher  = newBookItem.bookAuthor
-                    var addedBook  = BookItem(bTitle,bAuthor,bPublisher)
+                    var bTitle = newBookItem.bookTitle
+                    var bAuthor = newBookItem.bookPublisher
+                    var bPublisher = newBookItem.bookAuthor
+                    var addedBook = BookItem(bTitle, bAuthor, bPublisher)
                     bookData.add(addedBook)
                     Log.i("ADDBOOK", addedBook.toString())
                     liveAddBookData.setValue(addedBook)
@@ -77,7 +76,7 @@ class BookRepository {
                     Log.i("ADDBOOK", error.networkResponse.data.toString())
                 }) {
             override fun getParams(): MutableMap<String, String> {
-                var newBookParams : MutableMap<String, String> = HashMap()
+                var newBookParams: MutableMap<String, String> = HashMap()
                 newBookParams.put("title", newBookItem.bookTitle)
                 newBookParams.put("author", newBookItem.bookAuthor)
                 newBookParams.put("publisher", newBookItem.bookPublisher)
@@ -91,7 +90,7 @@ class BookRepository {
                 return headers
             }
         }
-        addBookRequestQueue.add(JSONObject)
+        addBookRequestQueue.add(addBookObject)
         return liveAddBookData
     }
 }

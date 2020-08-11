@@ -43,7 +43,7 @@ class BooksFragment : Fragment() {
             booksModel.init()
             booksModel.books.observe(viewLifecycleOwner, Observer {
                 if (it != null) {
-                    Log.i("IFTAGGG", "Am intrat pe if")
+                    Log.i("IFTAGGG", "If")
                     Log.i("IFTAGGG", it.toString())
                     it.dropLast(80)
                     adapter.setData(it)
@@ -54,8 +54,7 @@ class BooksFragment : Fragment() {
                     hideProgressBar()
                 }
             })
-        }
-        else{
+        } else {
             booksModel.books.observe(viewLifecycleOwner, Observer {
                 Log.i("ELSETAGGG", it.toString())
                 booksModel.init()
@@ -73,11 +72,11 @@ class BooksFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    fun hideProgressBar() {
+    private fun hideProgressBar() {
         booksLoading_progressBar.visibility = View.INVISIBLE
     }
 
-    fun showErrorMessage() {
+    private fun showErrorMessage() {
         Toast.makeText(context, getString(R.string.getBooksErrorMessage), Toast.LENGTH_SHORT).show()
     }
 
