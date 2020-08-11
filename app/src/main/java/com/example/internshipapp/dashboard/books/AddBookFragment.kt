@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -33,14 +34,19 @@ class AddBookFragment : Fragment() {
             var bookTitle: String = textInputBookTitle.text.toString().trim()
             var bookAuthor: String = textInputBookAuthor.text.toString().trim()
             var bookPublisher: String = textInputPublisher.text.toString().trim()
-            var newBook = BookItem(bookTitle, bookAuthor, bookPublisher)
-            //dupa add am facut din nou call la metoda init() ca sa fac iar request ul
-            booksModel.addBook(newBook)
-            booksModel.init()
-            redirectUser()
-            hideProgressButtonAnimation()
+            booksModel.addBook(BookItem(bookTitle, bookAuthor, bookPublisher))
+            booksModel.bookNew.observe(viewLifecycleOwner, Observer {
+                if (it != null){
+                    Log.i("ADDTA", it.toString())
+                    booksModel.init()
+                    redirectUser()
+                    hideProgressButtonAnimation()
+                }
+                else{
+                    Toast.makeText(context, "ADD ERROR", Toast.LENGTH_SHORT).show()
+                }
+            })
         }
-
         super.onViewCreated(view, savedInstanceState)
     }
 

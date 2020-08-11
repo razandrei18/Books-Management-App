@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -15,14 +16,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.internshipapp.dashboard.BooksFragmentViewModel
 import com.example.internshipapp.R
 import com.example.internshipapp.dashboard.models.BookItem
+import kotlinx.android.synthetic.main.book_item.*
 import kotlinx.android.synthetic.main.fragment_books.*
 
 
 class BooksFragment : Fragment() {
     lateinit var booksModel: BooksFragmentViewModel
     var adapter: BooksAdapter = BooksAdapter()
-    var booksList: List<BookItem> = emptyList()
-    var emptyList: List<BookItem> = emptyList()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_books, container, false)
@@ -36,21 +36,16 @@ class BooksFragment : Fragment() {
         if (c != null) {
             booksModel.setContext(c)
         }
+
         recyclerView_books.layoutManager = LinearLayoutManager(context)
 
-        /*Deci ca idee, dupa logare ma duce la pagina de books, imi arata ok cartile, apoi daca fac add imi adauga cartea, ma redirectioneaza iar la books, dar lista noua (cea care contine si cartea adaugata) o adauga in plus la cea
-        veche, nu o sterge intai pe cea veche astfel incat sa am doar o lista.*/
-
-        //aici verific daca e null ca in momentul in care daca am apelat deja odata metoda init sa nu o reapeleze daca valoarea nu s-a schimbat
         if (booksModel.books.value.isNullOrEmpty()) {
-            //am incercat sa setez de fiecare data recyclerView-ului sa fie gol, astfel incat sa nu imi adauge valorile peste si sa am 2 liste
-            adapter.setData(emptyList)
-            recyclerView_books.adapter = adapter
             booksModel.init()
-            booksModel.books.observe(viewLifecycleOwner, Observer<List<BookItem>>() {
-                recyclerView_books.layoutManager = LinearLayoutManager(context)
+            booksModel.books.observe(viewLifecycleOwner, Observer {
                 if (it != null) {
-                    booksList = it
+                    Log.i("IFTAGGG", "Am intrat pe if")
+                    Log.i("IFTAGGG", it.toString())
+                    it.dropLast(80)
                     adapter.setData(it)
                     recyclerView_books.adapter = adapter
                     hideProgressBar()
@@ -59,10 +54,15 @@ class BooksFragment : Fragment() {
                     hideProgressBar()
                 }
             })
-        } else {
-            adapter.setData(booksList)
-            recyclerView_books.adapter = adapter
-            hideProgressBar()
+        }
+        else{
+            booksModel.books.observe(viewLifecycleOwner, Observer {
+                Log.i("ELSETAGGG", it.toString())
+                booksModel.init()
+                adapter.setData(it)
+                recyclerView_books.adapter = adapter
+                hideProgressBar()
+            })
         }
 
         recyclerView_books.setHasFixedSize(true)
@@ -87,7 +87,6 @@ class BooksFragment : Fragment() {
             commit()
         }
     }
-
 
 }
 

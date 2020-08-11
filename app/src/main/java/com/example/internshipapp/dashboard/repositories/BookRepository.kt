@@ -19,9 +19,11 @@ import org.json.JSONObject
 
 class BookRepository {
     var liveBookData = MutableLiveData<List<BookItem>>()
+    var liveAddBookData = MutableLiveData<BookItem>()
     val getBooksurl = "https://ancient-earth-13943.herokuapp.com/api/books/"
     val addBookUrl = "https://ancient-earth-13943.herokuapp.com/api/books/"
     var bookData: ArrayList<BookItem> = ArrayList()
+
 
     fun booksGetRequest(c: Context): MutableLiveData<List<BookItem>> {
 
@@ -38,10 +40,8 @@ class BookRepository {
                         var publisher: String = bookObject.getString("publisher")
                         var bookItem = BookItem(title, author, publisher)
                         bookData.add(bookItem)
-                        println(bookData)
                     }
                     liveBookData.setValue(bookData)
-                    println(liveBookData)
 
                 },
                 Response.ErrorListener { error ->
@@ -59,18 +59,25 @@ class BookRepository {
         return liveBookData
     }
 
-    fun addBookRequest(c: Context, newBookItem: BookItem) {
+    fun addBookRequest(c: Context, newBookItem: BookItem): MutableLiveData<BookItem> {
         val addBookRequestQueue = Volley.newRequestQueue(c)
         val sharedPref = c.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE).getString(TEXT, "")
         var JSONObject = object : StringRequest(Method.POST, addBookUrl,
                 Response.Listener { response ->
-                    Log.i("ADDBOOK", response.toString())
+                    Log.i("ADDBOOK", response)
+                    var bTitle  = newBookItem.bookTitle
+                    var bAuthor  = newBookItem.bookPublisher
+                    var bPublisher  = newBookItem.bookAuthor
+                    var addedBook  = BookItem(bTitle,bAuthor,bPublisher)
+                    bookData.add(addedBook)
+                    Log.i("ADDBOOK", addedBook.toString())
+                    liveAddBookData.setValue(addedBook)
                 },
                 Response.ErrorListener { error ->
                     Log.i("ADDBOOK", error.networkResponse.data.toString())
                 }) {
             override fun getParams(): MutableMap<String, String> {
-                var newBookParams: MutableMap<String, String> = HashMap<String, String>()
+                var newBookParams : MutableMap<String, String> = HashMap()
                 newBookParams.put("title", newBookItem.bookTitle)
                 newBookParams.put("author", newBookItem.bookAuthor)
                 newBookParams.put("publisher", newBookItem.bookPublisher)
@@ -80,12 +87,14 @@ class BookRepository {
             @Throws(AuthFailureError::class)
             override fun getHeaders(): Map<String, String> {
                 val headers = HashMap<String, String>()
-                headers.put("Authorization", "$sharedPref");
+                headers["Authorization"] = "$sharedPref";
                 return headers
             }
         }
         addBookRequestQueue.add(JSONObject)
-
+        return liveAddBookData
     }
 }
+
+
 

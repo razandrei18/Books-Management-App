@@ -9,7 +9,7 @@ import com.example.internshipapp.R
 import com.example.internshipapp.dashboard.models.BookItem
 import kotlinx.android.synthetic.main.book_item.view.*
 
-class BooksAdapter() : RecyclerView.Adapter<BooksAdapter.BooksViewHolder>() {
+class BooksAdapter : RecyclerView.Adapter<BooksAdapter.BooksViewHolder>() {
 
     private var booksList: List<BookItem> = ArrayList()
 
@@ -32,13 +32,12 @@ class BooksAdapter() : RecyclerView.Adapter<BooksAdapter.BooksViewHolder>() {
     override fun onBindViewHolder(holder: BooksViewHolder, position: Int) {
         val currentBook = booksList[position]
 
-        holder.textviewBookTitle.setText(currentBook.bookTitle)
-        holder.textviewBookAuthor.setText(currentBook.bookAuthor)
-        holder.textviewBookPublisher.setText(currentBook.bookPublisher)
+        holder.textviewBookTitle.text = currentBook.bookTitle
+        holder.textviewBookAuthor.text = currentBook.bookAuthor
+        holder.textviewBookPublisher.text = currentBook.bookPublisher
 
     }
 
     override fun getItemCount() = booksList.size
-
 
 }

@@ -14,13 +14,14 @@ class BooksFragmentViewModel() : ViewModel() {
     lateinit var cont: Context
     var books: MutableLiveData<List<BookItem>> = MutableLiveData<List<BookItem>>()
     var bookRepo: BookRepository = BookRepository()
+    var bookNew : MutableLiveData<BookItem> = MutableLiveData<BookItem>()
 
-
-    fun init() {
+    fun init(): MutableLiveData<List<BookItem>> {
         if (books.value.isNullOrEmpty()) {
             books = bookRepo.booksGetRequest(cont)
+            return books
         } else {
-            books.value = emptyList()
+            return books
         }
     }
 
@@ -29,6 +30,6 @@ class BooksFragmentViewModel() : ViewModel() {
     }
 
     fun addBook(book: BookItem) {
-        bookRepo.addBookRequest(cont, book)
+        bookNew = bookRepo.addBookRequest(cont, book)
     }
 }
