@@ -1,20 +1,30 @@
 package com.example.internshipapp.dashboard
 
 import android.content.Context
-import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.example.internshipapp.dashboard.books.BooksAdapter
 import com.example.internshipapp.dashboard.models.BookItem
 import com.example.internshipapp.dashboard.repositories.BookRepository
-import kotlinx.android.synthetic.main.fragment_books.*
 
 class BooksFragmentViewModel() : ViewModel() {
 
     lateinit var cont: Context
     var books: MutableLiveData<List<BookItem>> = MutableLiveData<List<BookItem>>()
+    var triggerAddBook = MutableLiveData<Boolean>()
     var bookRepo: BookRepository = BookRepository()
-    var bookNew: MutableLiveData<BookItem> = MutableLiveData<BookItem>()
+    var bookItem: BookItem? = null
+    var bookNew: LiveData<BookItem> = Transformations.switchMap(triggerAddBook) {
+        if (it != null && it)
+            addBook()
+        else
+            null
+    }
+
+    fun addBook(): LiveData<BookItem> {
+        return bookRepo.addBookRequest(cont, bookItem)
+    }
 
     fun init(): MutableLiveData<List<BookItem>> {
         if (books.value.isNullOrEmpty()) {
@@ -29,7 +39,4 @@ class BooksFragmentViewModel() : ViewModel() {
         this.cont = ctx
     }
 
-    fun addBook(book: BookItem) {
-        bookNew = bookRepo.addBookRequest(cont, book)
-    }
 }

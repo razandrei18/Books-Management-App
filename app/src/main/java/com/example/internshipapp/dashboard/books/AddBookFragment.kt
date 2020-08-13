@@ -34,18 +34,25 @@ class AddBookFragment : Fragment() {
             var bookTitle: String = textInputBookTitle.text.toString().trim()
             var bookAuthor: String = textInputBookAuthor.text.toString().trim()
             var bookPublisher: String = textInputPublisher.text.toString().trim()
-            booksModel.addBook(BookItem(bookTitle, bookAuthor, bookPublisher))
-            booksModel.bookNew.observe(viewLifecycleOwner, Observer {
-                if (it != null) {
-                    Log.i("ADDTAG", it.toString())
-                    booksModel.init()
-                    redirectUser()
-                    hideProgressButtonAnimation()
-                } else {
-                    Toast.makeText(context, "ADD ERROR", Toast.LENGTH_SHORT).show()
-                }
-            })
+            booksModel.bookItem = BookItem(bookTitle, bookAuthor, bookPublisher)
+            booksModel.triggerAddBook.value = true
         }
+
+
+        booksModel.bookNew.observe(viewLifecycleOwner, Observer {
+            hideProgressButtonAnimation()
+            if (booksModel.triggerAddBook.value!!) {
+                if (it != null) {
+                    booksModel.init()
+                    booksModel.triggerAddBook.value = false
+                    booksModel.bookItem = null
+                    redirectUser()
+                } else {
+                    hideProgressButtonAnimation()
+                }
+            }
+        })
+
         super.onViewCreated(view, savedInstanceState)
     }
 

@@ -26,7 +26,6 @@ class BooksFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_books, container, false)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,30 +38,17 @@ class BooksFragment : Fragment() {
 
         recyclerView_books.layoutManager = LinearLayoutManager(context)
 
-        if (booksModel.books.value.isNullOrEmpty()) {
-            booksModel.init()
-            booksModel.books.observe(viewLifecycleOwner, Observer {
-                if (it != null) {
-                    Log.i("IFTAGGG", "If")
-                    Log.i("IFTAGGG", it.toString())
-                    it.dropLast(80)
-                    adapter.setData(it)
-                    recyclerView_books.adapter = adapter
-                    hideProgressBar()
-                } else {
-                    showErrorMessage()
-                    hideProgressBar()
-                }
-            })
-        } else {
-            booksModel.books.observe(viewLifecycleOwner, Observer {
-                Log.i("ELSETAGGG", it.toString())
-                booksModel.init()
+        booksModel.init()
+        booksModel.books.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
                 adapter.setData(it)
                 recyclerView_books.adapter = adapter
                 hideProgressBar()
-            })
-        }
+            } else {
+                showErrorMessage()
+                hideProgressBar()
+            }
+        })
 
         recyclerView_books.setHasFixedSize(true)
         addBook_button.setOnClickListener {
@@ -86,7 +72,6 @@ class BooksFragment : Fragment() {
             commit()
         }
     }
-
 }
 
 

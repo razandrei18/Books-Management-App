@@ -17,19 +17,19 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 class BookRepository {
-    var liveBookData = MutableLiveData<List<BookItem>>()
-    var liveAddBookData = MutableLiveData<BookItem>()
+
+
     val getBooksurl = "https://ancient-earth-13943.herokuapp.com/api/books/"
     val addBookUrl = "https://ancient-earth-13943.herokuapp.com/api/books/"
     var bookData: ArrayList<BookItem> = ArrayList()
 
 
     fun booksGetRequest(c: Context): MutableLiveData<List<BookItem>> {
-
+        var liveBookData = MutableLiveData<List<BookItem>>()
         val requestQueue = Volley.newRequestQueue(c)
         val sharedPref = c.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE).getString(TEXT, "")
         Log.i("EDITTT", sharedPref)
-        var jsonArrayRequest = object : JsonArrayRequest(Request.Method.GET, getBooksurl, null,
+        var jsonArrayRequest = object : JsonArrayRequest(Method.GET, getBooksurl, null,
                 Response.Listener { response ->
                     var jsonArray: JSONArray = response
                     for (item in 0 until jsonArray.length()) {
@@ -58,18 +58,17 @@ class BookRepository {
         return liveBookData
     }
 
-    fun addBookRequest(c: Context, newBookItem: BookItem): MutableLiveData<BookItem> {
+    fun addBookRequest(c: Context, newBookItem: BookItem?): MutableLiveData<BookItem> {
+        var liveAddBookData = MutableLiveData<BookItem>()
         val addBookRequestQueue = Volley.newRequestQueue(c)
         val sharedPref = c.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE).getString(TEXT, "")
         var addBookObject = object : StringRequest(Method.POST, addBookUrl,
                 Response.Listener { response ->
-                    Log.i("ADDBOOK", response)
-                    var bTitle = newBookItem.bookTitle
-                    var bAuthor = newBookItem.bookPublisher
-                    var bPublisher = newBookItem.bookAuthor
+                    var bTitle = newBookItem?.bookTitle
+                    var bAuthor = newBookItem?.bookPublisher
+                    var bPublisher = newBookItem?.bookAuthor
                     var addedBook = BookItem(bTitle, bAuthor, bPublisher)
                     bookData.add(addedBook)
-                    Log.i("ADDBOOK", addedBook.toString())
                     liveAddBookData.setValue(addedBook)
                 },
                 Response.ErrorListener { error ->
@@ -77,9 +76,9 @@ class BookRepository {
                 }) {
             override fun getParams(): MutableMap<String, String> {
                 var newBookParams: MutableMap<String, String> = HashMap()
-                newBookParams.put("title", newBookItem.bookTitle)
-                newBookParams.put("author", newBookItem.bookAuthor)
-                newBookParams.put("publisher", newBookItem.bookPublisher)
+                newBookParams.put("title", newBookItem?.bookTitle.toString())
+                newBookParams.put("author", newBookItem?.bookAuthor.toString())
+                newBookParams.put("publisher", newBookItem?.bookPublisher.toString())
                 return newBookParams
             }
 
