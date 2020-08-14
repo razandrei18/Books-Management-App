@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.android.volley.AuthFailureError
 import com.android.volley.Request
+import com.android.volley.Request.Method.POST
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.StringRequest
@@ -21,6 +22,7 @@ class BookRepository {
 
     val getBooksurl = "https://ancient-earth-13943.herokuapp.com/api/books/"
     val addBookUrl = "https://ancient-earth-13943.herokuapp.com/api/books/"
+    val deleteBookUrl = "https://ancient-earth-13943.herokuapp.com/api/books/"
     var bookData: ArrayList<BookItem> = ArrayList()
 
 
@@ -37,11 +39,11 @@ class BookRepository {
                         var title: String = bookObject.getString("title")
                         var author: String = bookObject.getString("author")
                         var publisher: String = bookObject.getString("publisher")
-                        var bookItem = BookItem(title, author, publisher)
+                        var id = bookObject.getString("_id")
+                        var bookItem = BookItem(title, author, publisher, id)
                         bookData.add(bookItem)
                     }
                     liveBookData.setValue(bookData)
-
                 },
                 Response.ErrorListener { error ->
                     Log.i("getBooksERR", error.toString())
@@ -62,17 +64,19 @@ class BookRepository {
         var liveAddBookData = MutableLiveData<BookItem>()
         val addBookRequestQueue = Volley.newRequestQueue(c)
         val sharedPref = c.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE).getString(TEXT, "")
-        var addBookObject = object : StringRequest(Method.POST, addBookUrl,
+        var addBookObject = object : StringRequest(POST, addBookUrl,
                 Response.Listener { response ->
-                    var bTitle = newBookItem?.bookTitle
-                    var bAuthor = newBookItem?.bookPublisher
-                    var bPublisher = newBookItem?.bookAuthor
-                    var addedBook = BookItem(bTitle, bAuthor, bPublisher)
+                    var bTitle = JSONObject(response).getString("title")
+                    var bAuthor = JSONObject(response).getString("author")
+                    var bPublisher = JSONObject(response).getString("publisher")
+                    var bId = JSONObject(response).getString("_id")
+                    var addedBook = BookItem(bTitle, bAuthor, bPublisher, bId)
                     bookData.add(addedBook)
+                    Log.i("TAGGADDD", addedBook.toString())
                     liveAddBookData.setValue(addedBook)
                 },
                 Response.ErrorListener { error ->
-                    Log.i("ADDBOOK", error.networkResponse.data.toString())
+                    Log.i("AddBookError", error.networkResponse.data.toString())
                 }) {
             override fun getParams(): MutableMap<String, String> {
                 var newBookParams: MutableMap<String, String> = HashMap()
@@ -91,6 +95,31 @@ class BookRepository {
         }
         addBookRequestQueue.add(addBookObject)
         return liveAddBookData
+    }
+
+    fun deleteBookRequest(c: Context, bookItemDeleted: BookItem?): MutableLiveData<BookItem> {
+        var liveDeletedBookData = MutableLiveData<BookItem>()
+        val deleteBookRequestQueue = Volley.newRequestQueue(c)
+        val sharedPref = c.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE).getString(TEXT, "")
+        var deleteBookObject = object : StringRequest(Method.DELETE, deleteBookUrl + bookItemDeleted?.bookId.toString(),
+                Response.Listener { response ->
+                    if(JSONObject(response).getString("success")=="true") {
+                        bookData.remove(bookItemDeleted)
+                        liveDeletedBookData.setValue(bookItemDeleted)
+                    }
+                },
+                Response.ErrorListener { error ->
+                    Log.i("ERRORTAGG", error.networkResponse.statusCode.toString())
+                }) {
+            @Throws(AuthFailureError::class)
+            override fun getHeaders(): Map<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Authorization"] = "$sharedPref";
+                return headers
+            }
+        }
+        deleteBookRequestQueue.add(deleteBookObject)
+        return liveDeletedBookData
     }
 }
 

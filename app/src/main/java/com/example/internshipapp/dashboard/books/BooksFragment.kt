@@ -13,16 +13,20 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.daimajia.swipe.SwipeLayout
 import com.example.internshipapp.dashboard.BooksFragmentViewModel
 import com.example.internshipapp.R
 import com.example.internshipapp.dashboard.models.BookItem
 import kotlinx.android.synthetic.main.book_item.*
+import kotlinx.android.synthetic.main.book_item.view.*
+import kotlinx.android.synthetic.main.fragment_add_book.*
 import kotlinx.android.synthetic.main.fragment_books.*
 
 
-class BooksFragment : Fragment() {
+class BooksFragment : Fragment(), BooksAdapter.OnDeleteBtnClicked {
     lateinit var booksModel: BooksFragmentViewModel
-    var adapter: BooksAdapter = BooksAdapter()
+    var adapter: BooksAdapter = BooksAdapter(this)
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_books, container, false)
@@ -50,7 +54,17 @@ class BooksFragment : Fragment() {
             }
         })
 
+        booksModel.deletedBook.observe(viewLifecycleOwner, Observer {
+            if (booksModel.triggerDeleteBook.value!!) {
+                if (it != null) {
+                    booksModel.triggerDeleteBook.value = false
+                    booksModel.bookItemD = null
+                }
+            }
+        })
+
         recyclerView_books.setHasFixedSize(true)
+
         addBook_button.setOnClickListener {
             var addBookFragment = AddBookFragment()
             openAddNewBookFragment(addBookFragment)
@@ -71,6 +85,12 @@ class BooksFragment : Fragment() {
             replace(R.id.main_fragment, fragment).addToBackStack("addBookFrag")
             commit()
         }
+    }
+
+    override fun onDeleteClick(bookItem: BookItem, position: Int) {
+        booksModel.bookItemD = bookItem
+        booksModel.triggerDeleteBook.value = true
+        adapter.deleteData(position)
     }
 }
 

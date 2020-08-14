@@ -34,10 +34,10 @@ class AddBookFragment : Fragment() {
             var bookTitle: String = textInputBookTitle.text.toString().trim()
             var bookAuthor: String = textInputBookAuthor.text.toString().trim()
             var bookPublisher: String = textInputPublisher.text.toString().trim()
-            booksModel.bookItem = BookItem(bookTitle, bookAuthor, bookPublisher)
+            var bookId = ""
+            booksModel.bookItem = BookItem(bookTitle, bookAuthor, bookPublisher, bookId)
             booksModel.triggerAddBook.value = true
         }
-
 
         booksModel.bookNew.observe(viewLifecycleOwner, Observer {
             hideProgressButtonAnimation()
@@ -46,13 +46,13 @@ class AddBookFragment : Fragment() {
                     booksModel.init()
                     booksModel.triggerAddBook.value = false
                     booksModel.bookItem = null
+
                     redirectUser()
                 } else {
                     hideProgressButtonAnimation()
                 }
             }
         })
-
         super.onViewCreated(view, savedInstanceState)
     }
 
