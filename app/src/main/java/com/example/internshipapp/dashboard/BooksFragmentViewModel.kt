@@ -9,10 +9,11 @@ import androidx.lifecycle.ViewModel
 import com.example.internshipapp.dashboard.models.BookItem
 import com.example.internshipapp.dashboard.repositories.BookRepository
 
-class BooksFragmentViewModel() : ViewModel() {
+class BooksFragmentViewModel(c : Context) : ViewModel() {
 
     lateinit var cont: Context
     var books: MutableLiveData<MutableList<BookItem>> = MutableLiveData<MutableList<BookItem>>()
+
     var triggerAddBook = MutableLiveData<Boolean>()
     var triggerDeleteBook = MutableLiveData<Boolean>()
     var triggerEditBook = MutableLiveData<Boolean>()
@@ -40,6 +41,10 @@ class BooksFragmentViewModel() : ViewModel() {
             null
     }
 
+    init {
+        books = bookRepo.booksGetRequest(c)
+    }
+
     private fun editBook(): LiveData<BookItem> {
         return bookRepo.editBookRequest(cont, bookItemEdit)
     }
@@ -52,16 +57,16 @@ class BooksFragmentViewModel() : ViewModel() {
         return bookRepo.addBookRequest(cont, bookItemAdd)
     }
 
-    fun init(): MutableLiveData<MutableList<BookItem>> {
-        if (books.value.isNullOrEmpty()) {
-            books = bookRepo.booksGetRequest(cont)
-            return books
-        } else {
-            return books
-        }
+    fun refreshList(): MutableLiveData<MutableList<BookItem>> {
+        books.value?.clear()
+        books = bookRepo.booksGetRequest(cont)
+        return books
     }
+
 
     fun setContext(ctx: Context) {
         this.cont = ctx
     }
 }
+
+

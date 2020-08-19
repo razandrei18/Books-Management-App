@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.internshipapp.dashboard.BooksFragmentViewModel
 import com.example.internshipapp.R
+import com.example.internshipapp.dashboard.BooksFragmentViewModelFactory
 import com.example.internshipapp.dashboard.models.BookItem
 import kotlinx.android.synthetic.main.fragment_books.*
 
@@ -20,32 +21,35 @@ import kotlinx.android.synthetic.main.fragment_books.*
 class BooksFragment : Fragment(), BooksAdapter.OnDeleteBtnClicked, BooksAdapter.OnEditBtnClicked {
     lateinit var booksModel: BooksFragmentViewModel
     var position: Int = 0
-
-    // var editBookFragment = EditBookFragment()
-    // lateinit var editedBook : BookItem
-    var adapter: BooksAdapter = BooksAdapter(this, this)
+    var emptyL : List<BookItem> = emptyList()
+    private var adapter: BooksAdapter = BooksAdapter(this, this)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_books, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        booksModel = ViewModelProvider(requireActivity()).get(BooksFragmentViewModel::class.java)
+        val bookViewModelFactory = BooksFragmentViewModelFactory(requireContext())
+        booksModel = ViewModelProvider(requireActivity(), bookViewModelFactory).get(BooksFragmentViewModel::class.java)
         booksLoading_progressBar.visibility = View.VISIBLE
         var c: Context? = context
         if (c != null) {
             booksModel.setContext(c)
         }
-
         recyclerView_books.layoutManager = LinearLayoutManager(context)
+        recyclerView_books.adapter = adapter
+
+        swipeRefresh_layout.setOnRefreshListener {
+            booksModel.refreshList()
+            adapter.notifyDataSetChanged()
+            swipeRefresh_layout.isRefreshing = false
+        }
 
         //booksList Observe
-        booksModel.init()
         booksModel.books.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 recyclerView_books.recycledViewPool.clear()
                 adapter.setData(it)
-                recyclerView_books.adapter = adapter
                 adapter.notifyDataSetChanged();
                 hideProgressBar()
             } else {

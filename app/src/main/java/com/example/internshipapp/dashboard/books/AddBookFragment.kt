@@ -22,6 +22,7 @@ class AddBookFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_add_book, container, false)
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         booksModel = ViewModelProvider(requireActivity()).get(BooksFragmentViewModel::class.java)
         var c: Context? = context
@@ -43,10 +44,9 @@ class AddBookFragment : Fragment() {
             hideProgressButtonAnimation()
             if (booksModel.triggerAddBook.value!!) {
                 if (it != null) {
-                    booksModel.init()
+                   // booksModel.init()
                     booksModel.triggerAddBook.value = false
                     booksModel.bookItemAdd = null
-
                     redirectUser()
                 } else {
                     hideProgressButtonAnimation()
