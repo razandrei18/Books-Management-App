@@ -10,23 +10,34 @@ import com.example.internshipapp.dashboard.models.BookItem
 import com.example.internshipapp.dashboard.repositories.BookRepository
 
 class BooksFragmentViewModel(c : Context) : ViewModel() {
-
-    lateinit var cont: Context
+    private lateinit var cont: Context
     var books: MutableLiveData<MutableList<BookItem>> = MutableLiveData<MutableList<BookItem>>()
-
-    var triggerAddBook = MutableLiveData<Boolean>()
-    var triggerDeleteBook = MutableLiveData<Boolean>()
-    var triggerEditBook = MutableLiveData<Boolean>()
+    var triggerAddBook : MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+    var triggerDeleteBook : MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+    var triggerEditBook : MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+    var triggerRefreshBooks : MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     var bookRepo: BookRepository = BookRepository()
     var bookItemAdd: BookItem? = null
     var bookItemDelete: BookItem? = null
     var bookItemEdit : BookItem? = null
+
+    init {
+        books = bookRepo.booksGetRequest(c)
+    }
+
     var bookNew: LiveData<BookItem> = Transformations.switchMap(triggerAddBook) {
         if (it != null && it)
             addBook()
         else
             null
     }
+    var bookRefreshedList: LiveData<MutableList<BookItem>> =Transformations.switchMap(triggerRefreshBooks) {
+        if (it != null && it)
+            refreshList()
+        else
+            null
+    }
+
     var deletedBook: LiveData<BookItem> = Transformations.switchMap(triggerDeleteBook) {
         if (it != null && it) {
             removeBook()
@@ -41,9 +52,7 @@ class BooksFragmentViewModel(c : Context) : ViewModel() {
             null
     }
 
-    init {
-        books = bookRepo.booksGetRequest(c)
-    }
+
 
     private fun editBook(): LiveData<BookItem> {
         return bookRepo.editBookRequest(cont, bookItemEdit)
@@ -57,12 +66,10 @@ class BooksFragmentViewModel(c : Context) : ViewModel() {
         return bookRepo.addBookRequest(cont, bookItemAdd)
     }
 
-    fun refreshList(): MutableLiveData<MutableList<BookItem>> {
+    private fun refreshList(): MutableLiveData<MutableList<BookItem>> {
         books.value?.clear()
-        books = bookRepo.booksGetRequest(cont)
-        return books
+         return bookRepo.booksGetRequest(cont)
     }
-
 
     fun setContext(ctx: Context) {
         this.cont = ctx

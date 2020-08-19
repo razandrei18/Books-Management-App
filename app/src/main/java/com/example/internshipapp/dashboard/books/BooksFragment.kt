@@ -40,10 +40,20 @@ class BooksFragment : Fragment(), BooksAdapter.OnDeleteBtnClicked, BooksAdapter.
         recyclerView_books.adapter = adapter
 
         swipeRefresh_layout.setOnRefreshListener {
-            booksModel.refreshList()
-            adapter.notifyDataSetChanged()
-            swipeRefresh_layout.isRefreshing = false
+            booksModel.triggerRefreshBooks.value = true
         }
+
+        //refresh List Observe
+        booksModel.bookRefreshedList.observe(viewLifecycleOwner, Observer {
+            if (booksModel.triggerRefreshBooks.value!!) {
+                if (it != null) {
+                    adapter.setData(it)
+                    swipeRefresh_layout.isRefreshing = false
+                    booksModel.triggerRefreshBooks.value = false
+                    adapter.notifyDataSetChanged()
+                }
+            }
+        })
 
         //booksList Observe
         booksModel.books.observe(viewLifecycleOwner, Observer {
