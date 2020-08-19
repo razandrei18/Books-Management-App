@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_books.*
 class BooksFragment : Fragment(), BooksAdapter.OnDeleteBtnClicked, BooksAdapter.OnEditBtnClicked {
     lateinit var booksModel: BooksFragmentViewModel
     var position: Int = 0
-    var emptyL : List<BookItem> = emptyList()
+
     private var adapter: BooksAdapter = BooksAdapter(this, this)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
