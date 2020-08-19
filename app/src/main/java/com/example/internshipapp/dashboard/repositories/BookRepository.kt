@@ -23,14 +23,14 @@ class BookRepository {
     val getBooksurl = "https://ancient-earth-13943.herokuapp.com/api/books/"
     val addBookUrl = "https://ancient-earth-13943.herokuapp.com/api/books/"
     val deleteBookUrl = "https://ancient-earth-13943.herokuapp.com/api/books/"
-    var bookData: ArrayList<BookItem> = ArrayList()
+    var editBookUrl = "https://ancient-earth-13943.herokuapp.com/api/books/"
+    var bookData: MutableList<BookItem> = ArrayList()
 
 
-    fun booksGetRequest(c: Context): MutableLiveData<List<BookItem>> {
-        var liveBookData = MutableLiveData<List<BookItem>>()
+    fun booksGetRequest(c: Context): MutableLiveData<MutableList<BookItem>> {
+        var liveBookData = MutableLiveData<MutableList<BookItem>>()
         val requestQueue = Volley.newRequestQueue(c)
         val sharedPref = c.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE).getString(TEXT, "")
-        Log.i("EDITTT", sharedPref)
         var jsonArrayRequest = object : JsonArrayRequest(Method.GET, getBooksurl, null,
                 Response.Listener { response ->
                     var jsonArray: JSONArray = response
@@ -72,7 +72,6 @@ class BookRepository {
                     var bId = JSONObject(response).getString("_id")
                     var addedBook = BookItem(bTitle, bAuthor, bPublisher, bId)
                     bookData.add(addedBook)
-                    Log.i("TAGGADDD", addedBook.toString())
                     liveAddBookData.setValue(addedBook)
                 },
                 Response.ErrorListener { error ->
@@ -120,6 +119,44 @@ class BookRepository {
         }
         deleteBookRequestQueue.add(deleteBookObject)
         return liveDeletedBookData
+    }
+
+    fun editBookRequest(c: Context, bookItemEdited: BookItem?): MutableLiveData<BookItem>{
+        var liveEditBookData = MutableLiveData<BookItem>()
+        var editBookRequestQueue = Volley.newRequestQueue(c)
+        val sharedPref = c.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE).getString(TEXT, "")
+        var editBookObject = object: StringRequest(Method.PUT, editBookUrl + bookItemEdited?.bookId.toString(),
+        Response.Listener { response ->
+            var bTitle = JSONObject(response).getString("title")
+            var bAuthor = JSONObject(response).getString("author")
+            var bPublisher = JSONObject(response).getString("publisher")
+            var bId = JSONObject(response).getString("_id")
+            var editedBook = BookItem(bTitle, bAuthor, bPublisher, bId )
+            liveEditBookData.setValue(bookItemEdited)
+        },
+        Response.ErrorListener { error ->
+            Log.i("EDITERROREDITTAGG", error.networkResponse.data.toString())
+        })
+        {
+            @Throws(AuthFailureError::class)
+            override fun getHeaders(): Map<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Authorization"] = "$sharedPref";
+                return headers
+            }
+
+                @Throws(AuthFailureError::class)
+                override fun getParams(): MutableMap<String, String> {
+                    var editedBookParams: MutableMap<String, String> = HashMap()
+                    editedBookParams.put("title", bookItemEdited?.bookTitle.toString())
+                    editedBookParams.put("author", bookItemEdited?.bookAuthor.toString())
+                    editedBookParams.put("publisher", bookItemEdited?.bookPublisher.toString())
+                    editedBookParams.put("_id", bookItemEdited?.bookId.toString())
+                    return editedBookParams
+                }
+            }
+        editBookRequestQueue.add(editBookObject)
+        return liveEditBookData
     }
 }
 

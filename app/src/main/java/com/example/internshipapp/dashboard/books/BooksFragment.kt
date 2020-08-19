@@ -2,31 +2,28 @@ package com.example.internshipapp.dashboard.books
 
 import android.content.Context
 import android.os.Bundle
-import android.text.method.TextKeyListener.clear
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.daimajia.swipe.SwipeLayout
 import com.example.internshipapp.dashboard.BooksFragmentViewModel
 import com.example.internshipapp.R
 import com.example.internshipapp.dashboard.models.BookItem
-import kotlinx.android.synthetic.main.book_item.*
-import kotlinx.android.synthetic.main.book_item.view.*
-import kotlinx.android.synthetic.main.fragment_add_book.*
 import kotlinx.android.synthetic.main.fragment_books.*
 
 
-class BooksFragment : Fragment(), BooksAdapter.OnDeleteBtnClicked {
+class BooksFragment : Fragment(), BooksAdapter.OnDeleteBtnClicked, BooksAdapter.OnEditBtnClicked {
     lateinit var booksModel: BooksFragmentViewModel
-    var adapter: BooksAdapter = BooksAdapter(this)
+    var position: Int = 0
 
+    // var editBookFragment = EditBookFragment()
+    // lateinit var editedBook : BookItem
+    var adapter: BooksAdapter = BooksAdapter(this, this)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_books, container, false)
@@ -42,11 +39,14 @@ class BooksFragment : Fragment(), BooksAdapter.OnDeleteBtnClicked {
 
         recyclerView_books.layoutManager = LinearLayoutManager(context)
 
+        //booksList Observe
         booksModel.init()
         booksModel.books.observe(viewLifecycleOwner, Observer {
             if (it != null) {
+                recyclerView_books.recycledViewPool.clear()
                 adapter.setData(it)
                 recyclerView_books.adapter = adapter
+                adapter.notifyDataSetChanged();
                 hideProgressBar()
             } else {
                 showErrorMessage()
@@ -54,12 +54,21 @@ class BooksFragment : Fragment(), BooksAdapter.OnDeleteBtnClicked {
             }
         })
 
+        //deleted book Observe
         booksModel.deletedBook.observe(viewLifecycleOwner, Observer {
             if (booksModel.triggerDeleteBook.value!!) {
                 if (it != null) {
                     booksModel.triggerDeleteBook.value = false
-                    booksModel.bookItemD = null
+                    booksModel.bookItemDelete = null
+                    adapter.notifyDataSetChanged()
                 }
+            }
+        })
+
+        booksModel.editedBook.observe(viewLifecycleOwner, Observer {
+            if(it != null) {
+                adapter.updateData(position, it)
+                adapter.notifyItemChanged(position)
             }
         })
 
@@ -88,9 +97,20 @@ class BooksFragment : Fragment(), BooksAdapter.OnDeleteBtnClicked {
     }
 
     override fun onDeleteClick(bookItem: BookItem, position: Int) {
-        booksModel.bookItemD = bookItem
+        booksModel.bookItemDelete = bookItem
         booksModel.triggerDeleteBook.value = true
         adapter.deleteData(position)
+        adapter.notifyItemRemoved(position)
+    }
+
+    override fun onEditClick(bookItem: BookItem, position: Int) {
+        this.position = position
+        booksModel.bookItemEdit = bookItem
+        var editBookFragment = EditBookFragment()
+        parentFragmentManager.beginTransaction().apply {
+            replace(R.id.main_fragment, editBookFragment).addToBackStack("editBookFrag")
+            commit()
+        }
     }
 }
 

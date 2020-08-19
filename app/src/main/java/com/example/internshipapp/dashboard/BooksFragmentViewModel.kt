@@ -12,12 +12,14 @@ import com.example.internshipapp.dashboard.repositories.BookRepository
 class BooksFragmentViewModel() : ViewModel() {
 
     lateinit var cont: Context
-    var books: MutableLiveData<List<BookItem>> = MutableLiveData<List<BookItem>>()
+    var books: MutableLiveData<MutableList<BookItem>> = MutableLiveData<MutableList<BookItem>>()
     var triggerAddBook = MutableLiveData<Boolean>()
     var triggerDeleteBook = MutableLiveData<Boolean>()
+    var triggerEditBook = MutableLiveData<Boolean>()
     var bookRepo: BookRepository = BookRepository()
-    var bookItem: BookItem? = null
-    var bookItemD: BookItem? = null
+    var bookItemAdd: BookItem? = null
+    var bookItemDelete: BookItem? = null
+    var bookItemEdit : BookItem? = null
     var bookNew: LiveData<BookItem> = Transformations.switchMap(triggerAddBook) {
         if (it != null && it)
             addBook()
@@ -31,15 +33,26 @@ class BooksFragmentViewModel() : ViewModel() {
             null
     }
 
+    var editedBook: LiveData<BookItem> = Transformations.switchMap(triggerEditBook) {
+        if (it != null && it) {
+            editBook()
+        } else
+            null
+    }
+
+    private fun editBook(): LiveData<BookItem> {
+        return bookRepo.editBookRequest(cont, bookItemEdit)
+    }
+
     private fun removeBook(): LiveData<BookItem> {
-        return bookRepo.deleteBookRequest(cont, bookItemD)
+        return bookRepo.deleteBookRequest(cont, bookItemDelete)
     }
 
     private fun addBook(): LiveData<BookItem> {
-        return bookRepo.addBookRequest(cont, bookItem)
+        return bookRepo.addBookRequest(cont, bookItemAdd)
     }
 
-    fun init(): MutableLiveData<List<BookItem>> {
+    fun init(): MutableLiveData<MutableList<BookItem>> {
         if (books.value.isNullOrEmpty()) {
             books = bookRepo.booksGetRequest(cont)
             return books

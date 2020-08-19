@@ -35,7 +35,7 @@ class AddBookFragment : Fragment() {
             var bookAuthor: String = textInputBookAuthor.text.toString().trim()
             var bookPublisher: String = textInputPublisher.text.toString().trim()
             var bookId = ""
-            booksModel.bookItem = BookItem(bookTitle, bookAuthor, bookPublisher, bookId)
+            booksModel.bookItemAdd = BookItem(bookTitle, bookAuthor, bookPublisher, bookId)
             booksModel.triggerAddBook.value = true
         }
 
@@ -45,7 +45,7 @@ class AddBookFragment : Fragment() {
                 if (it != null) {
                     booksModel.init()
                     booksModel.triggerAddBook.value = false
-                    booksModel.bookItem = null
+                    booksModel.bookItemAdd = null
 
                     redirectUser()
                 } else {

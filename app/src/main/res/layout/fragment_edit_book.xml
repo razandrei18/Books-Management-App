@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
+    tools:context=".dashboard.books.AddBookFragment">
+
+
+    <TextView
+        android:id="@+id/editBookTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/cambo"
+        android:text="@string/title_editBook"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="28dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/editBookTitle_editText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.666" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/editBookTitle_editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Title"
+        android:textColorHint="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@id/editBookAuthor_editText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:layout_marginTop="40dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputEditBookTitle"
+            android:layout_width="320dp"
+            android:layout_height="44dp"
+            android:fontFamily="@font/cambo"
+            android:inputType="text"
+            android:padding="6dp"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="36dp"
+            tools:layout_editor_absoluteY="183dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/editBookAuthor_editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Author"
+        android:textColorHint="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@id/editBookPublisher_editText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editBookTitle_editText">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputEditBookAuthor"
+            android:layout_width="320dp"
+            android:layout_height="44dp"
+            android:ems="10"
+            android:fontFamily="@font/cambo"
+            android:inputType="text"
+            android:padding="6dp"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/editBookPublisher_editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Publisher"
+        app:layout_constraintBottom_toTopOf="@id/editAddButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editBookAuthor_editText"
+        android:textColorHint="@color/colorPrimary">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputEditPublisher"
+            android:layout_width="320dp"
+            android:layout_height="44dp"
+            android:fontFamily="@font/cambo"
+            android:inputType="text"
+            android:padding="6dp"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_marginBottom="30dp"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+    <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
+        android:id="@+id/editAddButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/login_btn_selector"
+        android:textColor="#FFF"
+        android:text="EDIT"
+        android:textStyle="bold"
+        app:spinning_bar_padding="6dp"
+        app:spinning_bar_width="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editBookPublisher_editText" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
