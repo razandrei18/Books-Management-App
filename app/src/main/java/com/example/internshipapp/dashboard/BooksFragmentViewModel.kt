@@ -10,7 +10,7 @@ import com.example.internshipapp.dashboard.models.BookItem
 import com.example.internshipapp.dashboard.repositories.BookRepository
 
 class BooksFragmentViewModel(c : Context) : ViewModel() {
-    private lateinit var cont: Context
+    private var cont: Context = c
     var books: MutableLiveData<MutableList<BookItem>> = MutableLiveData<MutableList<BookItem>>()
     var triggerAddBook : MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     var triggerDeleteBook : MutableLiveData<Boolean> = MutableLiveData<Boolean>()
@@ -71,9 +71,6 @@ class BooksFragmentViewModel(c : Context) : ViewModel() {
          return bookRepo.booksGetRequest(cont)
     }
 
-    fun setContext(ctx: Context) {
-        this.cont = ctx
-    }
 }
 
 

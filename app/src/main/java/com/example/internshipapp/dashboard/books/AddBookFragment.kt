@@ -25,10 +25,6 @@ class AddBookFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         booksModel = ViewModelProvider(requireActivity()).get(BooksFragmentViewModel::class.java)
-        var c: Context? = context
-        if (c != null) {
-            booksModel.setContext(c)
-        }
 
         addButton.setOnClickListener {
             showProgressButtonAnimation()
@@ -44,12 +40,13 @@ class AddBookFragment : Fragment() {
             hideProgressButtonAnimation()
             if (booksModel.triggerAddBook.value!!) {
                 if (it != null) {
-                   // booksModel.init()
                     booksModel.triggerAddBook.value = false
                     booksModel.bookItemAdd = null
                     redirectUser()
                 } else {
+                    showAddBookErrorMessage()
                     hideProgressButtonAnimation()
+                    redirectUser()
                 }
             }
         })
@@ -67,6 +64,10 @@ class AddBookFragment : Fragment() {
 
     private fun redirectUser() {
         parentFragmentManager.popBackStack()
+    }
+
+    private fun showAddBookErrorMessage() {
+        Toast.makeText(context, getString(R.string.addBookErrorMessage), Toast.LENGTH_SHORT).show()
     }
 }
 

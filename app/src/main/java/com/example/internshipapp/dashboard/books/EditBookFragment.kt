@@ -31,10 +31,6 @@ class EditBookFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         booksModel = ViewModelProvider(requireActivity()).get(BooksFragmentViewModel::class.java)
-        var c: Context? = context
-        if (c != null) {
-            booksModel.setContext(c)
-        }
 
         textInputEditBookTitle.setText(booksModel.bookItemEdit?.bookTitle.toString())
         textInputEditBookAuthor.setText(booksModel.bookItemEdit?.bookAuthor.toString())
@@ -58,7 +54,9 @@ class EditBookFragment : Fragment() {
                     hideProgressButtonAnimation()
                     redirectUser()
                 } else {
+                    showEditBookErrorMessage()
                     hideProgressButtonAnimation()
+                    redirectUser()
                 }
             }
         })
@@ -78,5 +76,8 @@ class EditBookFragment : Fragment() {
 
     private fun redirectUser() {
         parentFragmentManager.popBackStack()
+    }
+    private fun showEditBookErrorMessage() {
+        Toast.makeText(context, getString(R.string.editBookErrorMessage), Toast.LENGTH_SHORT).show()
     }
 }

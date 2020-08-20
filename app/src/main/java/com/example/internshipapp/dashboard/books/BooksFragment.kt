@@ -32,10 +32,7 @@ class BooksFragment : Fragment(), BooksAdapter.OnDeleteBtnClicked, BooksAdapter.
         val bookViewModelFactory = BooksFragmentViewModelFactory(requireContext())
         booksModel = ViewModelProvider(requireActivity(), bookViewModelFactory).get(BooksFragmentViewModel::class.java)
         booksLoading_progressBar.visibility = View.VISIBLE
-        var c: Context? = context
-        if (c != null) {
-            booksModel.setContext(c)
-        }
+
         recyclerView_books.layoutManager = LinearLayoutManager(context)
         recyclerView_books.adapter = adapter
 
